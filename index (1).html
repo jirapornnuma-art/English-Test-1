@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Test 1</title>
+  <style>
+    :root{
+      --blue:#4da8ff;
+      --blue2:#88c8ff;
+      --sky:#eaf7ff;
+      --teal:#32c4b7;
+      --green:#7ad66f;
+      --yellow:#ffd95e;
+      --orange:#ffae57;
+      --pink:#ff8db1;
+      --purple:#8c7bff;
+      --text:#1f3650;
+      --white:#fff;
+      --danger:#ff6b6b;
+      --correct:#2bb673;
+      --wrong:#ef5350;
+      --card-shadow:0 12px 30px rgba(52, 102, 160, .16);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Segoe UI", Tahoma, sans-serif;
+      color:var(--text);
+      background:linear-gradient(180deg,#dff4ff 0%,#f4fbff 50%,#e6f8f2 100%);
+    }
+    .container{max-width:1100px;margin:0 auto;padding:18px}
+    .hero{
+      background:linear-gradient(135deg,#88d2ff,#ffffff 55%,#d7fff0);
+      border-radius:28px;
+      box-shadow:var(--card-shadow);
+      padding:22px;
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:20px;
+      align-items:center;
+      margin-top:14px;
+    }
+    .title-pill{
+      display:inline-block;
+      background:#fff6c8;
+      color:#8a6500;
+      padding:7px 14px;
+      border-radius:999px;
+      font-weight:700;
+      margin-bottom:10px;
+      border:2px dashed #f2c94c;
+    }
+    h1{font-size:clamp(26px,4vw,40px);line-height:1.15;margin:0 0 10px 0}
+    .subtitle{font-size:17px;line-height:1.7;margin:0 0 14px 0}
+    .tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .tag{background:#fff;border-radius:999px;padding:10px 14px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.06)}
+    .hero-illustration{background:rgba(255,255,255,.55);border-radius:24px;padding:10px}
+
+    .card{background:#fff;border-radius:var(--radius);box-shadow:var(--card-shadow);padding:22px;margin-top:18px}
+    .section-title{font-size:24px;margin:0 0 12px 0;color:#1f4d7a}
+    .small{font-size:14px;color:#54708b;line-height:1.7}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .info-list li{margin:8px 0}
+    .input-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .input-box label{display:block;font-weight:700;margin-bottom:6px}
+    .input-box input, .input-box select{
+      width:100%;padding:12px 14px;border:2px solid #d9ebfa;border-radius:14px;font-size:15px;
+      outline:none;
+    }
+    .input-box input:focus,.input-box select:focus{border-color:var(--blue)}
+
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+    button,.btn{
+      border:none;border-radius:16px;padding:12px 18px;font-size:15px;font-weight:800;cursor:pointer;
+      box-shadow:0 10px 20px rgba(0,0,0,.08);transition:.2s transform,.2s opacity;text-decoration:none;display:inline-block
+    }
+    button:hover,.btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:linear-gradient(135deg,#4da8ff,#6bc5ff);color:#fff}
+    .btn-secondary{background:#fff1b8;color:#8a6500}
+    .btn-green{background:linear-gradient(135deg,#44ce8d,#7ad66f);color:#fff}
+    .btn-danger{background:linear-gradient(135deg,#ff8a7a,#ff6b6b);color:#fff}
+    .btn-purple{background:linear-gradient(135deg,#8c7bff,#a69bff);color:#fff}
+
+    #examSection,#resultSection{display:none}
+    .exam-layout{display:grid;grid-template-columns:280px 1fr;gap:18px}
+    .sticky{position:sticky;top:12px;height:fit-content}
+    .timer-box{background:linear-gradient(135deg,#fff4cc,#ffffff);border:3px solid #ffe18b;padding:16px;border-radius:20px;text-align:center}
+    .timer-label{font-size:14px;color:#8a6500;font-weight:700}
+    .timer{font-size:32px;font-weight:900;color:#a56d00;margin-top:6px}
+    .progress-text{font-size:14px;margin-top:8px;color:#47647f}
+    .nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+    .nav-btn{
+      padding:10px 0;border-radius:12px;font-weight:800;border:2px solid #dcefff;background:#fff;color:#3e6690;cursor:pointer
+    }
+    .nav-btn.answered{background:#d8ffe8;border-color:#6fd694;color:#167947}
+    .nav-btn.current{background:#dff1ff;border-color:#5eb7ff;color:#105897}
+
+    .question-card{border:2px dashed #dbefff;border-radius:20px;padding:18px;margin-bottom:18px;background:#fcfeff}
+    .question-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+    .q-no{background:#e6f5ff;color:#1369a8;padding:6px 12px;border-radius:999px;font-weight:800}
+    .std{background:#f1ecff;color:#5d48c8;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:700}
+    .question-text{font-size:17px;line-height:1.7;margin-bottom:12px}
+    .question-text p{margin:.4em 0}
+    .option{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:2px solid #d9ebfa;border-radius:16px;margin:10px 0;background:#fff;cursor:pointer}
+    .option:hover{border-color:#7ec3ff;background:#f8fcff}
+    .option input{margin-top:3px;transform:scale(1.15)}
+    .option.correct{border-color:var(--correct);background:#ecfff5}
+    .option.wrong{border-color:var(--wrong);background:#fff0ef}
+    .option .opt-text{line-height:1.55}
+
+    .mini-table{border-collapse:collapse;width:100%;margin:10px 0;background:#fff;border-radius:12px;overflow:hidden}
+    .mini-table th,.mini-table td{border:1px solid #dbefff;padding:9px;text-align:center}
+    .mini-table th{background:#e6f5ff}
+    .bar-wrap{margin-top:8px}
+    .bar-item{display:flex;align-items:center;gap:10px;margin:8px 0}
+    .bar-label{width:90px;font-weight:700}
+    .bar-track{flex:1;height:18px;background:#eef6ff;border-radius:999px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#ffb660,#ffd95e)}
+    .bar-value{font-weight:700;min-width:18px}
+
+    .result-top{display:grid;grid-template-columns:220px 1fr;gap:18px;align-items:center}
+    .score-circle{
+      width:190px;height:190px;margin:auto;border-radius:50%;display:grid;place-items:center;
+      background:conic-gradient(#44ce8d var(--scoreDeg), #e8f1f7 0deg);
+      position:relative
+    }
+    .score-circle::before{content:"";position:absolute;inset:16px;background:#fff;border-radius:50%}
+    .score-content{position:relative;text-align:center}
+    .score-num{font-size:42px;font-weight:900;color:#188e5a}
+    .score-label{font-size:14px;color:#4f6e87;font-weight:700}
+    .pill-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .pill{padding:10px 14px;border-radius:999px;font-weight:800}
+    .pill.correct{background:#ebfff4;color:#127446}
+    .pill.wrong{background:#fff0ef;color:#b33632}
+    .pill.info{background:#edf5ff;color:#1b64a0}
+
+    .explanation-card{border:2px solid #e7f1fa;border-radius:18px;padding:16px;margin:14px 0;background:#fff}
+    .explanation-card.correct{border-color:#b9eccc;background:#f7fffa}
+    .explanation-card.wrong{border-color:#ffc6c3;background:#fffafa}
+    .answer-line{margin:8px 0;line-height:1.7}
+
+    .leaderboard-table{width:100%;border-collapse:collapse;margin-top:10px;overflow:hidden;border-radius:16px}
+    .leaderboard-table th,.leaderboard-table td{padding:12px 10px;border-bottom:1px solid #e8f2fb;text-align:left}
+    .leaderboard-table th{background:#e6f5ff;color:#125c96}
+    .rank-badge{font-weight:900;font-size:18px}
+    .medal{font-size:22px}
+
+    .notice{background:#fff7d6;border-left:6px solid #ffd95e;padding:14px;border-radius:14px;margin-top:14px;line-height:1.7}
+    .code-box{background:#0f1720;color:#d7eafc;padding:14px;border-radius:16px;overflow:auto;font-family:Consolas, monospace;font-size:13px}
+
+    @media (max-width:900px){
+      .hero,.exam-layout,.result-top,.grid-2{grid-template-columns:1fr}
+      .sticky{position:static}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <div>
+      <div class="title-pill">แบบฝึกเตรียมสอบ O-NET ภาษาอังกฤษ ป.6</div>
+      <h1>English Test 1</h1>
+      <p class="subtitle">
+        เวอร์ชันสีสันสดใส เหมาะกับนักเรียนประถมศึกษา โรงเรียนอนุบาลปากพะยูน<br>
+        ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์
+      </p>
+      <div class="tag-row">
+        <div class="tag">32 ข้อ</div>
+        <div class="tag">เวลา 60 นาที</div>
+        <div class="tag">เต็ม 100 คะแนน</div>
+        <div class="tag">มี Leaderboard</div>
+      </div>
+    </div>
+    <div class="hero-illustration">
+      <svg viewBox="0 0 520 330" width="100%" aria-label="cartoon students">
+        <defs>
+          <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#c8ecff"/>
+            <stop offset="100%" stop-color="#f0fbff"/>
+          </linearGradient>
+        </defs>
+        <rect x="0" y="0" width="520" height="330" rx="24" fill="url(#sky)"/>
+        <rect x="15" y="225" width="490" height="85" rx="18" fill="#b8efd1"/>
+        <ellipse cx="112" cy="258" rx="78" ry="25" fill="#8fd0f7" opacity=".6"/>
+        <ellipse cx="112" cy="258" rx="50" ry="15" fill="#5ab8ee" opacity=".7"/>
+        <path d="M72 257c10 6 18 5 24 0 8 7 18 6 24 0" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <path d="M350 70h125v105H350z" fill="#ffffff" stroke="#7ec3ff" stroke-width="4" rx="12"/>
+        <text x="412" y="102" text-anchor="middle" font-size="18" font-weight="700" fill="#126aa7">อนุบาลปากพะยูน</text>
+        <text x="412" y="126" text-anchor="middle" font-size="16" font-weight="700" fill="#25a575">ENGLISH FUN</text>
+        <text x="412" y="150" text-anchor="middle" font-size="15" fill="#4c6c89">Let's do our best!</text>
+        <circle cx="207" cy="148" r="42" fill="#ffd4b5"/>
+        <path d="M168 146c-3-33 16-54 40-54 33 0 45 20 42 55-9-5-19-9-38-8-20 1-30 4-44 7Z" fill="#4b3224"/>
+        <circle cx="193" cy="145" r="4" fill="#333"/><circle cx="220" cy="145" r="4" fill="#333"/>
+        <path d="M194 165q13 9 25 0" stroke="#9c6041" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="173" y="189" width="69" height="65" rx="14" fill="#ffffff" stroke="#aad7ff"/>
+        <rect x="173" y="189" width="69" height="16" rx="10" fill="#3c9cf7"/>
+        <path d="M188 205v60M227 205v60" stroke="#3a6c8a" stroke-width="4"/>
+        <path d="M188 265h-22M227 265h24" stroke="#3a6c8a" stroke-width="4" stroke-linecap="round"/>
+        <path d="M183 223h48" stroke="#dfefff" stroke-width="5"/>
+        <circle cx="312" cy="150" r="42" fill="#ffd4b5"/>
+        <path d="M273 145c0-34 16-49 41-49 25 0 44 17 40 55-14-11-30-16-53-12-10 2-18 4-28 6Z" fill="#2c2f68"/>
+        <circle cx="299" cy="145" r="4" fill="#333"/><circle cx="325" cy="145" r="4" fill="#333"/>
+        <path d="M299 164q12 8 24 0" stroke="#9c6041" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <rect x="277" y="189" width="69" height="65" rx="14" fill="#fff" stroke="#ffd3e3"/>
+        <rect x="277" y="189" width="69" height="16" rx="10" fill="#ff7ea7"/>
+        <path d="M290 205v60M332 205v60" stroke="#3a6c8a" stroke-width="4"/>
+        <path d="M290 265h-22M332 265h24" stroke="#3a6c8a" stroke-width="4" stroke-linecap="round"/>
+        <path d="M206 204l36-16" stroke="#4da8ff" stroke-width="5" stroke-linecap="round"/>
+        <path d="M312 210l17 15" stroke="#ff8db1" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="48" cy="50" r="14" fill="#ffe28a"/>
+        <g fill="#fff"><circle cx="90" cy="52" r="18"/><circle cx="108" cy="52" r="16"/><circle cx="124" cy="55" r="14"/><rect x="88" y="55" width="50" height="13"/></g>
+      </svg>
+    </div>
+  </section>
+
+  <section class="card" id="startSection">
+    <h2 class="section-title">เริ่มทำแบบทดสอบ</h2>
+    <p class="small">กรอกข้อมูลนักเรียนให้ครบ แล้วกดปุ่ม <strong>เริ่มทำข้อสอบ</strong> ระบบจะเริ่มจับเวลาอัตโนมัติ 60 นาที</p>
+    <div class="input-grid">
+      <div class="input-box">
+        <label>ชื่อ - นามสกุล</label>
+        <input id="studentName" placeholder="เช่น ด.ญ.มินตรา ใจดี" />
+      </div>
+      <div class="input-box">
+        <label>ชั้น</label>
+        <input id="studentClass" placeholder="เช่น ป.6/1" />
+      </div>
+      <div class="input-box">
+        <label>เลขที่</label>
+        <input id="studentNo" placeholder="เช่น 12" />
+      </div>
+      <div class="input-box">
+        <label>รหัสนักเรียน (ใช้จัดอันดับ)</label>
+        <input id="studentId" placeholder="เช่น 61012" />
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>คำแนะนำสำหรับนักเรียน</strong><br>
+      1) ทำทีละข้อให้ครบ 32 ข้อ<br>
+      2) สามารถย้อนกลับไปแก้คำตอบได้<br>
+      3) เมื่อกดส่งข้อสอบ จะเห็นคะแนน เฉลย และเหตุผลทันที<br>
+      4) หากครูเชื่อม Google Sheets แล้ว คะแนนจะขึ้นบน Leaderboard ของห้อง
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="startExam()">เริ่มทำข้อสอบ</button>
+      <button class="btn-secondary" onclick="scrollToGuide()">ดูวิธีใช้งานสำหรับครู</button>
+    </div>
+  </section>
+
+  <section id="examSection" class="card">
+    <div class="exam-layout">
+      <aside class="sticky">
+        <div class="timer-box">
+          <div class="timer-label">เวลาที่เหลือ</div>
+          <div id="timer" class="timer">60:00</div>
+          <div id="progressText" class="progress-text">ตอบแล้ว 0 / 32 ข้อ</div>
+          <div class="btn-row" style="justify-content:center">
+            <button class="btn-green" onclick="submitExam(false)">ส่งข้อสอบ</button>
+          </div>
+        </div>
+        <div class="card" style="padding:14px;margin-top:14px">
+          <div style="font-weight:800;margin-bottom:10px;color:#125c96">ไปที่ข้อ</div>
+          <div id="navGrid" class="nav-grid"></div>
+        </div>
+      </aside>
+      <main>
+        <div id="questionsContainer"></div>
+        <div class="btn-row">
+          <button class="btn-green" onclick="submitExam(false)">ส่งข้อสอบ</button>
+        </div>
+      </main>
+    </div>
+  </section>
+
+  <section id="resultSection" class="card">
+    <h2 class="section-title">ผลการทำแบบทดสอบ</h2>
+    <div class="result-top">
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-content">
+          <div class="score-num" id="scoreNum">0</div>
+          <div class="score-label">คะแนนเต็ม 100</div>
+        </div>
+      </div>
+      <div>
+        <h3 id="resultTitle" style="margin:0 0 8px 0"></h3>
+        <div class="pill-row">
+          <div class="pill correct" id="correctCount">ตอบถูก 0 ข้อ</div>
+          <div class="pill wrong" id="wrongCount">ตอบผิด 0 ข้อ</div>
+          <div class="pill info" id="timeSpent">ใช้เวลา 0 นาที</div>
+          <div class="pill info" id="rankInfo">อันดับ: -</div>
+        </div>
+        <div class="notice" style="margin-top:14px">
+          ระบบจะแสดงเฉลย พร้อมเหตุผลรายข้อด้านล่าง นักเรียนสามารถเรียนรู้จากข้อผิดพลาดและลองทำใหม่ได้
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;background:#fbfeff">
+      <h3 style="margin-top:0;color:#125c96">🏆 Leaderboard</h3>
+      <div id="leaderboardWrap">กำลังโหลดข้อมูล...</div>
+    </div>
+
+    <div class="card" style="margin-top:18px;background:#fffdf7">
+      <h3 style="margin-top:0;color:#8a6500">เฉลยพร้อมเหตุผล</h3>
+      <div id="explanations"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-purple" onclick="location.reload()">ทำข้อสอบอีกครั้ง</button>
+    </div>
+  </section>
+
+  <section class="card" id="guideSection">
+    <h2 class="section-title">คู่มือครูแบบง่ายมาก (ใช้กับ Google Sites และ Google Sheets)</h2>
+    <div class="grid-2">
+      <div>
+        <h3 style="color:#125c96">A) วิธีนำขึ้น Google Sites</h3>
+        <ol class="info-list">
+          <li>ดาวน์โหลดไฟล์ <strong>ONET_P6_Colorful_GoogleSites.html</strong></li>
+          <li>คลิกขวาไฟล์ → เปิดด้วย <strong>Notepad</strong></li>
+          <li>กด <strong>Ctrl + A</strong> แล้ว <strong>Ctrl + C</strong></li>
+          <li>เข้า <strong>Google Sites</strong> แล้วสร้างเว็บไซต์ใหม่</li>
+          <li>กด <strong>แทรก → ฝัง → ฝังโค้ด</strong></li>
+          <li>กด <strong>Ctrl + V</strong> วางโค้ดทั้งหมด</li>
+          <li>กด <strong>ถัดไป → แทรก</strong></li>
+          <li>กด <strong>เผยแพร่</strong> แล้วส่งลิงก์ให้นักเรียน</li>
+        </ol>
+      </div>
+      <div>
+        <h3 style="color:#125c96">B) วิธีเชื่อม Google Sheets เพื่อเก็บคะแนนและจัดอันดับ</h3>
+        <ol class="info-list">
+          <li>สร้าง Google Sheets ใหม่ เช่น <strong>ONET P6 Leaderboard</strong></li>
+          <li>เปิดเมนู <strong>ส่วนขยาย → Apps Script</strong></li>
+          <li>ลบโค้ดเดิม แล้ววางโค้ดจากไฟล์ <strong>Leaderboard_GoogleSheet.gs</strong></li>
+          <li>กดบันทึก และกดรันฟังก์ชัน <strong>setup</strong> 1 ครั้ง</li>
+          <li>เลือก <strong>Deploy → New deployment → Web app</strong></li>
+          <li>ตั้งค่า <strong>Execute as: Me</strong> และ <strong>Who has access: Anyone</strong></li>
+          <li>กด Deploy แล้วคัดลอกลิงก์ที่ลงท้ายด้วย <strong>/exec</strong></li>
+          <li>กลับมาแก้ไฟล์ HTML แล้วหา <strong>const LEADERBOARD_URL = '';</strong></li>
+          <li>วางลิงก์แทนช่องว่าง แล้วบันทึกไฟล์ HTML ใหม่</li>
+          <li>คัดลอกโค้ด HTML ที่แก้แล้ว ไปฝังใน Google Sites อีกรอบ</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>บรรทัดที่ต้องแก้ในไฟล์ HTML</strong>
+      <div class="code-box">const LEADERBOARD_URL = '';</div>
+      ตัวอย่างเมื่อวางลิงก์แล้ว<br>
+      <div class="code-box">const LEADERBOARD_URL = 'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec';</div>
+    </div>
+  </section>
+</div>
+
+<script>
+const LEADERBOARD_URL = ''; // ใส่ URL จาก Google Apps Script ตรงนี้ หากยังว่าง ระบบจะใช้ leaderboard ในเครื่องนี้เท่านั้น
+const EXAM_DURATION_MINUTES = 60;
+const SCORE_PER_QUESTION = 3.125;
+let startTime = null;
+let countdown = EXAM_DURATION_MINUTES * 60;
+let timerInterval = null;
+let answers = {};
+let latestRank = '-';
+
+const questions = [
+  {no:1,std:'ต 1.1 ป.6/3',type:'mc',q:'<p><strong>Look at the sign.</strong></p><div class="question-text"><svg viewBox="0 0 170 140" width="160"><circle cx="85" cy="70" r="56" fill="#fff" stroke="#d32222" stroke-width="9"/><path d="M60 34h40v10l-6 6-4 52H70L66 50l-6-6z" fill="#444"/><path d="M82 33l5-18h20" stroke="#444" stroke-width="5" fill="none"/><path d="M44 28l82 82" stroke="#d32222" stroke-width="10" stroke-linecap="round"/></svg></div><p>What does this sign mean?</p>',options:['You can buy drinks here.','You must not bring drinks inside.','You should drink more water.','You must bring your own drink.'],answer:1,explain:'ป้ายเป็นรูปเครื่องดื่มถูกขีดทับ จึงหมายถึงห้ามนำเครื่องดื่มเข้าไปข้างใน',answerText:'You must not bring drinks inside.'},
+  {no:2,std:'ต 1.1 ป.6/3',q:'<p><strong>Look at the notice.</strong></p><table class="mini-table"><tr><th>LIBRARY NOTICE</th></tr><tr><td><strong>CLOSED ON FRIDAY</strong><br>Open again on Monday at 8:00 a.m.<br>Please return your books by Thursday.</td></tr></table><p>Which sentence is TRUE?</p>',options:['Students can visit the library on Friday.','The library opens again on Sunday.','Students should return their books on Thursday or earlier.','The library opens at eight o\'clock on Friday.'],answer:2,explain:'ประกาศบอกว่าปิดวันศุกร์ เปิดอีกครั้งวันจันทร์ 8.00 น. และให้คืนหนังสือภายในวันพฤหัสบดี',answerText:'Students should return their books on Thursday or earlier.'},
+  {no:3,std:'ต 1.1 ป.6/4',q:'<p><strong>Read the passage and answer questions 3–6.</strong></p><div class="notice" style="background:#f8fcff;border-left-color:#7ec3ff"><strong>A Small Garden, A Big Change</strong><br><br>Last month, students at Green Hill School started a vegetable garden behind their classroom. At first, there was only dry ground and a lot of rubbish. Their teacher helped them clean the area and plant tomatoes, carrots, and beans.<br><br>Every morning, two students water the plants before class. They do not use plastic bottles only once. Instead, they turn old bottles into small plant pots.<br><br>Last Friday, the students picked their first vegetables and gave them to the school kitchen. Everyone was happy to eat fresh vegetables at lunch.<br><br>Now, the students want to make their garden bigger so that they can grow more food for their school.</div><p>What is the passage mainly about?</p>',options:['How students cook lunch at school.','Why teachers buy vegetables.','How students reuse their school books.','How students grow vegetables and help their school.'],answer:3,explain:'ใจความหลักของเรื่องคือการที่นักเรียนช่วยกันปลูกผักและเกิดประโยชน์ต่อโรงเรียน',answerText:'How students grow vegetables and help their school.'},
+  {no:4,std:'ต 1.1 ป.6/4',q:'<p><strong>From the passage above, where is the vegetable garden?</strong></p>',options:['Behind the classroom.','Next to the school kitchen.','In front of the school.','Inside the classroom.'],answer:0,explain:'ในเรื่องระบุชัดว่า started a vegetable garden behind their classroom',answerText:'Behind the classroom.'},
+  {no:5,std:'ต 1.1 ป.6/4',q:'<p><strong>From the passage above, what do the students do with old plastic bottles?</strong></p>',options:['They sell them to their teachers.','They use them as plant pots.','They put vegetables inside them for lunch.','They throw them away every morning.'],answer:1,explain:'นักเรียนนำขวดพลาสติกเก่ามาทำเป็นกระถางต้นไม้',answerText:'They use them as plant pots.'},
+  {no:6,std:'ต 1.1 ป.6/4',q:'<p><strong>From the passage above, why do the students want a bigger garden?</strong></p>',options:['They want to build a new classroom.','They want to play more sports.','They want to grow more vegetables.','They want to sell plastic bottles.'],answer:2,explain:'ย่อหน้าสุดท้ายบอกว่าต้องการปลูกอาหารให้มากขึ้น',answerText:'They want to grow more vegetables.'},
+  {no:7,std:'ต 1.2 ป.6/1',q:'<p>Emma: Happy birthday, Lisa! This is for you.</p><p>Lisa: ________</p><p>Emma: You\'re welcome.</p>',options:['I\'m sorry to hear that.','Never mind.','See you tomorrow.','Thank you very much.'],answer:3,explain:'เมื่อได้รับของขวัญวันเกิด ต้องกล่าวขอบคุณ',answerText:'Thank you very much.'},
+  {no:8,std:'ต 1.2 ป.6/1',q:'<p>Tom: Excuse me. Is this seat taken?</p><p>Ben: No, it isn\'t. ________</p><p>Tom: Thank you.</p>',options:['You can sit here.','You must stand up.','Please go away.','You are too late.'],answer:0,explain:'ถ้าที่นั่งยังว่าง คำตอบที่เหมาะสมคืออนุญาตให้นั่งได้',answerText:'You can sit here.'},
+  {no:9,std:'ต 1.2 ป.6/2',q:'<p>Mother: First, wash the apples. Then, cut them into small pieces.</p><p>Dan: ________</p><p>Mother: Put them in the bowl.</p>',options:['Where did you buy the apples?','What should I do next?','How much are the apples?','Who likes eating apples?'],answer:1,explain:'คำตอบที่ต่อกับการบอกขั้นตอนถัดไปคือ What should I do next?',answerText:'What should I do next?'},
+  {no:10,std:'ต 1.2 ป.6/2',q:'<p>Jane: It\'s very hot in here. ________</p><p>Mary: Of course. Go ahead.</p>',options:['Do you have a new window?','Why is the window open?','May I open the window?','When did you close the window?'],answer:2,explain:'May I ... ? ใช้ขออนุญาตได้เหมาะสมที่สุด',answerText:'May I open the window?'},
+  {no:11,std:'ต 1.2 ป.6/3',q:'<p>Customer: Excuse me. I\'m looking for some milk.</p><p>Shop assistant: ________</p><p>Customer: Thank you for your help.</p>',options:['I don\'t drink milk.','The milk is very cold.','You bought some yesterday.','It\'s over there, next to the juice.'],answer:3,explain:'การช่วยเหลือที่เหมาะสมคือบอกตำแหน่งของสินค้า',answerText:'It\'s over there, next to the juice.'},
+  {no:12,std:'ต 1.2 ป.6/3',q:'<p>Peter: My bag is very heavy. Could you help me carry it?</p><p>Jack: ________</p><p>Peter: That\'s all right. I\'ll ask someone else.</p>',options:['I\'m sorry. My hands are full.','Sure. Give it to me.','Of course. I\'d love to.','No problem. I can help you.'],answer:0,explain:'ประโยคของ Peter ต่อด้วย I\'ll ask someone else แสดงว่า Jack ปฏิเสธการช่วยเหลืออย่างสุภาพ',answerText:'I\'m sorry. My hands are full.'},
+  {no:13,std:'ต 1.2 ป.6/4',q:'<p>Anna: What does your father do?</p><p>Mark: ________ He takes care of sick animals.</p>',options:['He works in the morning.','He\'s a vet.','He\'s very kind.','He likes animals.'],answer:1,explain:'What does your father do? เป็นคำถามเรื่องอาชีพ และคนที่ดูแลสัตว์ป่วยคือสัตวแพทย์',answerText:'He\'s a vet.'},
+  {no:14,std:'ต 1.2 ป.6/4',q:'<p>Susan: ________</p><p>David: Three times a week. I usually play on Mondays, Wednesdays, and Fridays.</p>',options:['Where do you play football?','How long do you play football?','How often do you play football?','Who do you play football with?'],answer:2,explain:'Three times a week เป็นการบอกความถี่ จึงต้องใช้ How often',answerText:'How often do you play football?'},
+  {no:15,std:'ต 1.2 ป.6/5',q:'<p>Mike: Why do you like reading books?</p><p>Lucy: ________</p>',options:['I have five books.','I read books every evening.','My books are on the table.','Because they help me learn new things.'],answer:3,explain:'คำถามขึ้นต้นด้วย Why จึงต้องตอบด้วยเหตุผล',answerText:'Because they help me learn new things.'},
+  {no:16,std:'ต 1.2 ป.6/5',q:'<p>Mum: You look worried. What\'s wrong?</p><p>Kate: ________</p><p>Mum: Don\'t worry. You still have time to study.</p>',options:['I\'m afraid I won\'t pass the test tomorrow.','I\'m excited about my birthday party.','I\'m happy because I passed the test.','I\'m hungry because I missed lunch.'],answer:0,explain:'คำตอบของแม่พูดเรื่องการยังมีเวลาอ่านหนังสือ แสดงว่าลูกกังวลเรื่องการสอบ',answerText:'I\'m afraid I won\'t pass the test tomorrow.'},
+  {no:17,std:'ต 1.3 ป.6/1',q:'<p><strong>Read the information.</strong></p><table class="mini-table"><tr><th colspan="2">STUDENT PROFILE</th></tr><tr><td>Name</td><td>Daniel Brown</td></tr><tr><td>Age</td><td>12</td></tr><tr><td>Birthday</td><td>15 August</td></tr><tr><td>Favorite subject</td><td>Science</td></tr><tr><td>Hobby</td><td>Swimming</td></tr></table><p>Which sentence is correct about Daniel?</p>',options:['He is fifteen years old.','He was born in August.','His favorite subject is English.','He likes playing basketball.'],answer:1,explain:'ข้อมูลระบุวันเกิด 15 August จึงสรุปได้ว่าเขาเกิดในเดือนสิงหาคม',answerText:'He was born in August.'},
+  {no:18,std:'ต 1.3 ป.6/1',q:'<p><strong>Read the weather forecast.</strong></p><table class="mini-table"><tr><th>Day</th><th>Temperature</th></tr><tr><td>Monday</td><td>31°C</td></tr><tr><td>Tuesday</td><td>33°C</td></tr><tr><td>Wednesday</td><td>32°C</td></tr><tr><td>Thursday</td><td>35°C</td></tr></table><p>Which day will be the hottest?</p>',options:['Monday.','Tuesday.','Thursday.','Wednesday.'],answer:2,explain:'35°C สูงที่สุด จึงเป็นวัน Thursday',answerText:'Thursday.'},
+  {no:19,std:'ต 1.3 ป.6/2',q:'<p><strong>Look at the chart and answer questions 19–20.</strong></p><div class="bar-wrap"><div class="bar-item"><div class="bar-label">Football</div><div class="bar-track"><div class="bar-fill" style="width:80%"></div></div><div class="bar-value">16</div></div><div class="bar-item"><div class="bar-label">Drawing</div><div class="bar-track"><div class="bar-fill" style="width:75%"></div></div><div class="bar-value">15</div></div><div class="bar-item"><div class="bar-label">Reading</div><div class="bar-track"><div class="bar-fill" style="width:50%"></div></div><div class="bar-value">10</div></div><div class="bar-item"><div class="bar-label">Swimming</div><div class="bar-track"><div class="bar-fill" style="width:40%"></div></div><div class="bar-value">8</div></div></div><p>Which activity is the least popular?</p>',options:['Football.','Drawing.','Reading.','Swimming.'],answer:3,explain:'จำนวนต่ำสุดคือ 8 คน จึงเป็น Swimming',answerText:'Swimming.'},
+  {no:20,std:'ต 1.3 ป.6/2',q:'<p><strong>From the chart above, which sentence is TRUE?</strong></p>',options:['More students like drawing than reading.','Ten students like swimming.','Reading is the most popular activity.','The same number of students like football and drawing.'],answer:0,explain:'Drawing มี 15 คน ส่วน Reading มี 10 คน จึงมากกว่า',answerText:'More students like drawing than reading.'},
+  {no:21,std:'ต 1.3 ป.6/3',q:'<p>Your school wants students to stop using single-use plastic cups.</p><p>Which sentence gives the most helpful opinion?</p>',options:['I think plastic cups are always expensive.','I think students should bring reusable water bottles.','I think students should drink less water.','I think the school should buy more plastic cups.'],answer:1,explain:'เป็นความเห็นที่ช่วยแก้ปัญหาการใช้พลาสติกครั้งเดียว',answerText:'I think students should bring reusable water bottles.'},
+  {no:22,std:'ต 1.3 ป.6/3',q:'<p>Your class is going to visit a museum. The teacher asks everyone to share their ideas about the trip.</p><p>Which sentence expresses an opinion?</p>',options:['The museum opens at nine o\'clock.','There are twenty-five students in our class.','I think visiting the museum will be interesting.','We will travel by bus on Friday.'],answer:2,explain:'ประโยคที่มี I think แสดงความเห็น ไม่ใช่ข้อมูลข้อเท็จจริง',answerText:'I think visiting the museum will be interesting.'},
+  {no:23,std:'ต 2.1 ป.6/2',q:'<p>People decorate trees with colorful lights, give presents to their family and friends, and sing special songs in December.</p><p>Which festival is described?</p>',options:['Halloween.','Valentine\'s Day.','Thanksgiving.','Christmas.'],answer:3,explain:'ลักษณะดังกล่าวเป็นกิจกรรมของเทศกาล Christmas',answerText:'Christmas.'},
+  {no:24,std:'ต 2.1 ป.6/2',q:'<p>On October 31, children wear costumes and go from house to house asking for sweets.</p><p>What do they usually say?</p>',options:['Trick or treat!','Happy New Year!','Merry Christmas!','Happy birthday!'],answer:0,explain:'ประโยค Trick or treat! ใช้ในวัน Halloween',answerText:'Trick or treat!'},
+  {no:25,std:'ต 2.2 ป.6/1',q:'<p>Which sentence has the correct word order?</p>',options:['My sister every day goes to school.','My sister goes to school every day.','My sister to school goes every day.','My sister goes every to school day.'],answer:1,explain:'โครงสร้างถูกต้องคือ ประธาน + กริยา + ส่วนขยาย + every day',answerText:'My sister goes to school every day.'},
+  {no:26,std:'ต 2.2 ป.6/1',q:'<p>Which sentence is written correctly?</p>',options:['where do you live.','Where do you live.','Where do you live?','where do you live?'],answer:2,explain:'ต้องขึ้นต้นด้วยตัวพิมพ์ใหญ่และปิดท้ายด้วยเครื่องหมายคำถาม',answerText:'Where do you live?'},
+  {no:27,std:'ต 2.2 ป.6/1',q:'<p>Which sentence usually ends with rising intonation in a neutral conversation?</p>',options:['Where is your school?','My name is Anna.','Please close the door.','Are you ready?'],answer:3,explain:'ประโยค Yes/No question มักขึ้นเสียงสูงตอนท้าย',answerText:'Are you ready?'},
+  {no:28,std:'ต 2.2 ป.6/2',q:'<p><strong>Read the information.</strong></p><table class="mini-table"><tr><th>Songkran</th><th>Christmas</th></tr><tr><td>Celebrated in April</td><td>Celebrated in December</td></tr><tr><td>People spend time with family.</td><td>People spend time with family.</td></tr><tr><td>People often splash water.</td><td>People often give presents.</td></tr></table><p>What do Songkran and Christmas have in common?</p>',options:['People spend time with their families.','People splash water at both festivals.','Both festivals take place in April.','Both festivals take place in December.'],answer:0,explain:'ข้อมูลที่เหมือนกันคือทั้งสองเทศกาลใช้เวลาอยู่กับครอบครัว',answerText:'People spend time with their families.'},
+  {no:29,std:'ต 4.1 ป.6/1',q:'<p>Teacher: Please turn to page twenty-four.</p><p>Student: Sorry, I didn\'t hear you. ________</p><p>Teacher: Page twenty-four.</p>',options:['Can I close my book?','Could you say that again, please?','May I leave the classroom?','Could you give me a new book?'],answer:1,explain:'เมื่อนักเรียนฟังไม่ทัน ควรขอให้ครูพูดซ้ำอย่างสุภาพ',answerText:'Could you say that again, please?'},
+  {no:30,std:'ต 4.1 ป.6/1',q:'<p>You want to borrow a book from the library.</p><p>What should you say to the librarian?</p>',options:['Can you write this book?','Where did you buy this book?','May I borrow this book, please?','Do you want to read my book?'],answer:2,explain:'การขอยืมหนังสือควรใช้ May I borrow this book, please?',answerText:'May I borrow this book, please?'},
+  {no:31,std:'ต 4.1 ป.6/1',q:'<p><strong>At the school canteen</strong></p><table class="mini-table"><tr><th>Menu</th><th>Price</th></tr><tr><td>Chicken sandwich</td><td>30 baht</td></tr><tr><td>Fried rice</td><td>40 baht</td></tr><tr><td>Orange juice</td><td>15 baht</td></tr><tr><td>Milk</td><td>10 baht</td></tr></table><p>You have 50 baht. You want fried rice and orange juice, but you do not have enough money. What should you say to buy a meal and a drink?</p>',options:['I\'d like two plates of fried rice, please.','I\'d like fried rice and two glasses of orange juice, please.','I\'d like two chicken sandwiches, please.','I\'d like fried rice and a glass of milk, please.'],answer:3,explain:'Fried rice 40 บาท + Milk 10 บาท = 50 บาท พอดี',answerText:'I\'d like fried rice and a glass of milk, please.'},
+  {no:32,std:'ต 4.1 ป.6/1',q:'<p>Your friend has just won a running race.</p><p>What should you say?</p>',options:['Well done! I\'m proud of you.','I\'m sorry for your mistake.','Be careful next time.','I hope you get well soon.'],answer:0,explain:'เป็นประโยคกล่าวชื่นชมเมื่อเพื่อนประสบความสำเร็จ',answerText:'Well done! I\'m proud of you.'}
+];
+
+function scrollToGuide(){ document.getElementById('guideSection').scrollIntoView({behavior:'smooth'}); }
+
+function startExam(){
+  const name = document.getElementById('studentName').value.trim();
+  const stuClass = document.getElementById('studentClass').value.trim();
+  const stuNo = document.getElementById('studentNo').value.trim();
+  const stuId = document.getElementById('studentId').value.trim();
+  if(!name || !stuClass || !stuNo || !stuId){
+    alert('กรุณากรอก ชื่อ ชั้น เลขที่ และรหัสนักเรียน ให้ครบก่อนเริ่มสอบ');
+    return;
+  }
+  document.getElementById('startSection').style.display='none';
+  document.getElementById('examSection').style.display='block';
+  renderQuestions();
+  renderNav();
+  startTime = Date.now();
+  countdown = EXAM_DURATION_MINUTES * 60;
+  updateTimer();
+  timerInterval = setInterval(()=>{
+    countdown--; updateTimer();
+    if(countdown <= 0){ submitExam(true); }
+  },1000);
+}
+
+function renderQuestions(){
+  const wrap = document.getElementById('questionsContainer');
+  wrap.innerHTML = questions.map(q => `
+    <div class="question-card" id="q${q.no}">
+      <div class="question-head">
+        <div class="q-no">ข้อ ${q.no}</div>
+        <div class="std">${q.std}</div>
+      </div>
+      <div class="question-text">${q.q}</div>
+      <div>
+        ${q.options.map((opt,idx)=>`
+          <label class="option" id="q${q.no}_opt${idx}">
+            <input type="radio" name="q${q.no}" value="${idx}" onchange="saveAnswer(${q.no},${idx})">
+            <div class="opt-text"><strong>${String.fromCharCode(65+idx)}.</strong> ${opt}</div>
+          </label>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderNav(){
+  const nav = document.getElementById('navGrid');
+  nav.innerHTML = questions.map(q=>`<button class="nav-btn" id="nav${q.no}" onclick="document.getElementById('q${q.no}').scrollIntoView({behavior:'smooth', block:'start'})">${q.no}</button>`).join('');
+}
+
+function saveAnswer(qNo, idx){
+  answers[qNo] = idx;
+  document.getElementById('nav'+qNo).classList.add('answered');
+  updateProgress();
+}
+
+function updateProgress(){
+  const count = Object.keys(answers).length;
+  document.getElementById('progressText').textContent = `ตอบแล้ว ${count} / ${questions.length} ข้อ`;
+}
+
+function updateTimer(){
+  const min = String(Math.floor(countdown/60)).padStart(2,'0');
+  const sec = String(countdown%60).padStart(2,'0');
+  document.getElementById('timer').textContent = `${min}:${sec}`;
+}
+
+function submitExam(autoSubmit){
+  if(!autoSubmit){
+    const ok = confirm('ต้องการส่งข้อสอบใช่หรือไม่?');
+    if(!ok) return;
+  } else {
+    alert('หมดเวลาแล้ว ระบบจะส่งข้อสอบอัตโนมัติ');
+  }
+  clearInterval(timerInterval);
+  const rawScore = questions.reduce((sum,q)=> sum + ((answers[q.no]===q.answer)?1:0),0);
+  const score = +(rawScore * SCORE_PER_QUESTION).toFixed(2);
+  const usedSec = Math.max(0, EXAM_DURATION_MINUTES*60 - countdown);
+  const wrong = questions.length - rawScore;
+
+  document.getElementById('examSection').style.display='none';
+  document.getElementById('resultSection').style.display='block';
+
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreCircle').style.setProperty('--scoreDeg', `${(score/100)*360}deg`);
+  document.getElementById('correctCount').textContent = `ตอบถูก ${rawScore} ข้อ`;
+  document.getElementById('wrongCount').textContent = `ตอบผิด ${wrong} ข้อ`;
+  document.getElementById('timeSpent').textContent = `ใช้เวลา ${formatDuration(usedSec)}`;
+  document.getElementById('resultTitle').textContent = score >= 80 ? 'ยอดเยี่ยมมาก! 🌟' : score >= 50 ? 'เก่งมาก พยายามต่ออีกนิด 💪' : 'เริ่มต้นได้ดี มาฝึกเพิ่มกันนะ 😊';
+
+  renderExplanations();
+
+  const student = {
+    studentId: document.getElementById('studentId').value.trim(),
+    name: document.getElementById('studentName').value.trim(),
+    studentClass: document.getElementById('studentClass').value.trim(),
+    number: document.getElementById('studentNo').value.trim(),
+    score, rawScore, usedSec,
+    submittedAt: new Date().toISOString()
+  };
+  saveResult(student).then(rank=>{
+    latestRank = rank || '-';
+    document.getElementById('rankInfo').textContent = `อันดับ: ${latestRank}`;
+    loadLeaderboard(student.studentId);
+  });
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function renderExplanations(){
+  const wrap = document.getElementById('explanations');
+  wrap.innerHTML = questions.map(q=>{
+    const userAns = answers[q.no];
+    const isCorrect = userAns === q.answer;
+    return `
+      <div class="explanation-card ${isCorrect ? 'correct' : 'wrong'}">
+        <div class="question-head">
+          <div class="q-no">ข้อ ${q.no}</div>
+          <div class="std">${q.std}</div>
+        </div>
+        <div class="answer-line"><strong>คำตอบที่ถูกต้อง:</strong> ${q.answerText}</div>
+        <div class="answer-line"><strong>คำตอบของนักเรียน:</strong> ${userAns===undefined ? 'ไม่ได้ตอบ' : q.options[userAns]}</div>
+        <div class="answer-line"><strong>เหตุผล:</strong> ${q.explain}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function formatDuration(sec){
+  const m = Math.floor(sec/60), s = sec%60;
+  return `${m} นาที ${s} วินาที`;
+}
+
+async function saveResult(student){
+  if(LEADERBOARD_URL){
+    try{
+      const res = await fetch(LEADERBOARD_URL, {
+        method:'POST',
+        body: JSON.stringify({action:'save', data:student}),
+        headers:{'Content-Type':'text/plain;charset=utf-8'}
+      });
+      const data = await res.json();
+      return data.rank;
+    }catch(err){
+      console.error(err);
+    }
+  }
+  // fallback local leaderboard
+  let list = JSON.parse(localStorage.getItem('onetLeaderboardP6')||'[]');
+  const idx = list.findIndex(x=>x.studentId===student.studentId);
+  if(idx>-1){
+    const old = list[idx];
+    if(student.score > old.score || (student.score===old.score && student.usedSec < old.usedSec)) list[idx]=student;
+  } else list.push(student);
+  list.sort((a,b)=> b.score-a.score || a.usedSec-b.usedSec);
+  localStorage.setItem('onetLeaderboardP6', JSON.stringify(list));
+  return list.findIndex(x=>x.studentId===student.studentId)+1;
+}
+
+async function loadLeaderboard(currentStudentId){
+  let list = [];
+  if(LEADERBOARD_URL){
+    try{
+      const res = await fetch(LEADERBOARD_URL + '?action=list');
+      const data = await res.json();
+      list = data.items || [];
+    }catch(err){
+      console.error(err);
+    }
+  }
+  if(!list.length){
+    list = JSON.parse(localStorage.getItem('onetLeaderboardP6')||'[]');
+  }
+  list.sort((a,b)=> b.score-a.score || a.usedSec-b.usedSec);
+  const rank = list.findIndex(x=>x.studentId===currentStudentId)+1;
+  if(rank>0){ document.getElementById('rankInfo').textContent = `อันดับ: ${rank}`; }
+  renderLeaderboard(list.slice(0,20));
+}
+
+function renderLeaderboard(list){
+  const medals = ['🥇','🥈','🥉'];
+  if(!list.length){
+    document.getElementById('leaderboardWrap').innerHTML = '<div class="small">ยังไม่มีข้อมูลคะแนนในระบบ</div>';
+    return;
+  }
+  const html = `
+    <table class="leaderboard-table">
+      <thead><tr><th>อันดับ</th><th>รหัสนักเรียน</th><th>ชื่อ</th><th>ชั้น</th><th>คะแนน</th><th>เวลาที่ใช้</th></tr></thead>
+      <tbody>
+        ${list.map((x,i)=>`
+          <tr>
+            <td class="rank-badge">${medals[i] ? `<span class="medal">${medals[i]}</span>` : i+1}</td>
+            <td>${escapeHtml(x.studentId||'-')}</td>
+            <td>${escapeHtml(x.name||'-')}</td>
+            <td>${escapeHtml(x.studentClass||'-')}</td>
+            <td><strong>${x.score}</strong></td>
+            <td>${formatDuration(Number(x.usedSec||0))}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+  document.getElementById('leaderboardWrap').innerHTML = html;
+}
+
+function escapeHtml(text){
+  return String(text).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m]));
+}
+</script>
+</body>
+</html>
